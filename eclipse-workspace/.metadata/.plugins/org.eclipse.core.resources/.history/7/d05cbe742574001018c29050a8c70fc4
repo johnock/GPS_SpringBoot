@@ -1,0 +1,15 @@
+package com.example.findpathserver.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/courses")
+public class CourseController {
+
+    @PostMapping
+    public ResponseEntity<String> addCourse(@RequestBody String course) {
+        System.out.println("받은 코스 데이터: " + course);
+        return ResponseEntity.ok("Course received!");
+    }
+}

@@ -1,0 +1,5 @@
+package com.example.findpathserver.model;
+
+public class CoursePoi {
+
+}

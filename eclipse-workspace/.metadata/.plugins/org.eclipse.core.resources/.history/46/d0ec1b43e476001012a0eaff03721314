@@ -1,0 +1,59 @@
+package com.example.findpathserver.service;
+
+import com.example.findpathserver.model.Course;
+import com.example.findpathserver.repository.CourseRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class CourseService {
+
+    private final CourseRepository courseRepo;
+    // (있다면) 사용자 관련 의존성도 여기 공존할 수 있음
+    // private final UserRepository userRepo;
+
+    public CourseService(CourseRepository courseRepo /*, UserRepository userRepo */) {
+        this.courseRepo = courseRepo;
+        // this.userRepo = userRepo;
+    }
+
+    /** 코스 저장(신규/수정 공용) - path 문자열 방식 */
+    public Course saveCourse(Course c) {
+        // --- 필수값 검증 ---
+        if (!StringUtils.hasText(c.getName())) {
+            throw new IllegalArgumentException("Course name is required");
+        }
+        if (!StringUtils.hasText(c.getPath())) {
+            throw new IllegalArgumentException("Course path is required");
+        }
+
+        // --- 간단 정제 ---
+        c.setName(c.getName().trim());
+        if (c.getDescription() != null) c.setDescription(c.getDescription().trim());
+        c.setPath(c.getPath().trim());
+        if (c.getColor() != null) c.setColor(c.getColor().trim());
+        if (c.getCoverImageUrl() != null) c.setCoverImageUrl(c.getCoverImageUrl().trim());
+        // distanceKm/durationMin 은 숫자형이라 트리밍 불필요
+
+        return courseRepo.save(c);
+    }
+
+    /** 코스 전체 목록 (지금은 안드로이드에서 저장만 쓰지만, 관리자나 내부 확인용으로 남김) */
+    @Transactional(readOnly = true)
+    public List<Course> findAllCourses() {
+        return courseRepo.findAll();
+    }
+
+    // ======================
+    // 회원 관리 메서드가 이 서비스에 함께 있다면
+    // 아래처럼 "의미가 드러나는" 네이밍으로 구분해서 쓰세요.
+    // (예: saveUser, findUserById, updateUserProfile 등)
+    // ======================
+    // public User saveUser(User u) { ... }
+    // public Optional<User> findUserById(Long id) { ... }
+    // public void deleteUser(Long id) { ... }
+}

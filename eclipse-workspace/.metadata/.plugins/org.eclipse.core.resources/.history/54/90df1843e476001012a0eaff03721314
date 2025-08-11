@@ -1,0 +1,68 @@
+package com.example.findpathserver.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Course {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Oracle 12c+에서 OK
+    private Long id;
+
+    // 기본 메타
+    @Column(nullable = false)
+    private String name;
+
+    @Column
+    private String description;
+
+    // 경로 전체를 "lat,lng;lat,lng;..." 형태로 저장
+    // 경로가 길어질 수 있으니 CLOB으로 보관
+    @Lob
+    @Column(nullable = false)
+    private String path;
+
+    // 선택 메타
+    @Column(length = 16)
+    private String color;              // "#RRGGBB" 등
+
+    private Double distanceKm;         // km
+    private Integer durationMin;       // 분
+
+    @Column(length = 1024)
+    private String coverImageUrl;      // 대표 이미지 URL
+
+    // ===== 생성자 =====
+    public Course() {}
+
+    public Course(String name, String description, String path) {
+        this.name = name;
+        this.description = description;
+        this.path = path;
+    }
+
+    // ===== Getter / Setter =====
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getPath() { return path; }
+    public void setPath(String path) { this.path = path; }
+
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
+
+    public Double getDistanceKm() { return distanceKm; }
+    public void setDistanceKm(Double distanceKm) { this.distanceKm = distanceKm; }
+
+    public Integer getDurationMin() { return durationMin; }
+    public void setDurationMin(Integer durationMin) { this.durationMin = durationMin; }
+
+    public String getCoverImageUrl() { return coverImageUrl; }
+    public void setCoverImageUrl(String coverImageUrl) { this.coverImageUrl = coverImageUrl; }
+}

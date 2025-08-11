@@ -1,0 +1,60 @@
+package com.example.findpathserver.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "COURSES") // ✅ 테이블명 명시
+@SequenceGenerator(       // ✅ 이미 있는 DB 시퀀스명과 매칭
+    name = "COURSES_SEQ",
+    sequenceName = "COURSES_SEQ",
+    allocationSize = 1
+)
+public class CoursePoi {
+
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COURSES_SEQ") // ✅ 시퀀스 사용
+	    @Column(name = "COURSE_ID")   // ✅ PK 컬럼명 매핑 (중요!)
+    private Long id;            // PK
+
+    @Column(name = "LAT")
+    private double lat;         // 위도
+
+    @Column(name = "LNG")
+    private double lng;         // 경도
+
+    @Column(name = "TITLE")
+    private String title;       // POI 이름
+
+    @Column(name = "THUMBNAIL_URL")
+    private String thumbnailUrl; // 썸네일 URL
+
+    @Column(name = "MEMO")
+    private String memo;        // 메모(선택)
+
+    @ManyToOne
+    @JoinColumn(name = "COURSE_ID", nullable = false) // ✅ FK 컬럼명
+    private Course course;      // FK → COURSES.COURSE_ID
+
+    public CoursePoi() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public double getLat() { return lat; }
+    public void setLat(double lat) { this.lat = lat; }
+
+    public double getLng() { return lng; }
+    public void setLng(double lng) { this.lng = lng; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getThumbnailUrl() { return thumbnailUrl; }
+    public void setThumbnailUrl(String thumbnailUrl) { this.thumbnailUrl = thumbnailUrl; }
+
+    public String getMemo() { return memo; }
+    public void setMemo(String memo) { this.memo = memo; }
+
+    public Course getCourse() { return course; }
+    public void setCourse(Course course) { this.course = course; }
+}

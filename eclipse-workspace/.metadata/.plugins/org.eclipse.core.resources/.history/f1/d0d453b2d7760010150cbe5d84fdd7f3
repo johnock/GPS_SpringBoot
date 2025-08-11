@@ -1,0 +1,24 @@
+package com.example.findpathserver.service;
+
+import com.example.findpathserver.model.Course;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface CourseService {
+
+    /** 코스 저장(신규/수정 공용) */
+    Course save(Course course);
+
+    /** 전체 목록 */
+    List<Course> findAll();
+
+    /** 단건 조회 */
+    Optional<Course> findById(Long id);
+
+    /** 메타/경로 수정 (부분 수정용) */
+    Course update(Long id, Course partial);
+
+    /** 삭제 */
+    void delete(Long id);
+}
